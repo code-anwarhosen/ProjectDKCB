@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Processor</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body class="bg-slate-900 min-h-screen">
+    <!-- Upload Page -->
+    <div id="uploadPage" class="page-container flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md px-4">
+            <div class="bg-slate-800 rounded-xl shadow-2xl p-8">
+
+                <div class="text-center mb-8">
+                    <div class="mb-4 text-sky-400">
+                        <i class="fas fa-file-excel text-4xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-slate-100 mb-2">Excel Processor</h1>
+                    <p class="text-slate-400">Upload your spreadsheet file.</p>
+                    <p class="text-slate-400">Note: This app will work in a specific scenario!</p>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="mb-6 relative group">
+                        <label class="cursor-pointer block">
+                            <input type="file" name="excel_file" id="fileInput" accept=".xlsx,.xls" class="hidden" required>
+                            <div id="dropZone" class="border-2 border-dashed border-slate-600 rounded-xl p-8 text-center
+                                      hover:border-sky-400 transition-colors bg-slate-700/30">
+                                <div class="text-sky-400 mb-3">
+                                    <i class="fas fa-cloud-upload-alt text-3xl"></i>
+                                </div>
+                                <div id="uploadText">
+                                    <p class="text-slate-300 font-medium">Drag & Drop File</p>
+                                    <p class="text-sm text-slate-500 mt-1">or click to browse</p>
+                                </div>
+                                <div id="fileInfo" class="hidden">
+                                    <p class="text-slate-100 font-medium truncate"></p>
+                                    <button type="button" class="text-red-400 hover:text-red-300 text-sm mt-2" onclick="clearFile()">
+                                        Remove File
+                                    </button>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="mb-3 max-w-[120px] mx-auto">
+                        <input type="date" id="working_date" class="text-slate-300 border-none outline-none">
+                        <script>document.getElementById('working_date').valueAsDate  = new Date();</script>
+                    </div>
+
+                    <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 px-6 rounded-xl
+                               font-semibold transition-colors flex items-center justify-center
+                               disabled:bg-slate-600 disabled:text-slate-400 disabled:cursor-not-allowed" id="submitButton" disabled>
+                        <i class="fas fa-gear mr-2"></i>Process File
+                    </button>
+
+                    <div id="status" class="hidden mt-4 text-center text-sm">
+                        <div class="inline-block animate-spin text-sky-400 mr-2">
+                            <i class="fas fa-spinner"></i>
+                        </div>
+                        <span class="text-slate-300 status-text"></span>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor Page (initially hidden) -->
+    <div id="editorPage" class="page-container hidden-page">
+        <div class="container mx-auto px-4 py-8">
+
+            <div class="mb-2 text-center">
+                <h1 class="text-2xl font-bold text-slate-100 mb-2">
+                    <i class="fas fa-table text-sky-400 mr-2"></i>Cash Book Data
+                </h1>
+                <p class="text-slate-400 text-sm font-medium">Date: <span id="displayDate"></span></p>
+            </div>
+
+            <div class="flex justify-end items-end m-3 text-slate-400">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <span class="text-sm font-medium">Editor Mode</span>
+                    <div class="relative">
+                        <input type="checkbox" class="hidden peer" id="toggleCheckbox" onclick="toggleEditMode(this.checked)">
+                        <div class="w-10 h-6 rounded-full bg-slate-700 shadow-inner transition-colors duration-300 peer-checked:bg-sky-600"></div>
+                        <div class="absolute inset-y-0 left-0 w-5 h-5 m-0.5 rounded-full bg-slate-400 shadow-md transform transition-transform duration-300 peer-checked:translate-x-4 peer-checked:bg-slate-100"></div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl shadow-2xl p-6 overflow-x-auto">
+                <div class="inline-block min-w-full">
+                    <div class="grid grid-cols-8 gap-px bg-slate-700 mb-px">
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">SN</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Cash A/C</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Hire A/C</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Amount</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Payment Type</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Installment</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Date</div>
+                        <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Remarks</div>
+                    </div>
+
+                    <div id="spreadsheet" class="grid grid-cols-8 gap-px bg-slate-700"></div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-between items-center">
+                <div class="text-slate-400 text-sm">
+                    Total Rows: <span id="rowCount">0</span>
+                </div>
+
+                <div class="flex gap-4">
+                    <button onclick="addNewRow()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl
+                               font-medium transition-colors flex items-center">
+                        <i class="fas fa-plus mr-2"></i>Add Row
+                    </button>
+                    <button onclick="downloadFile()" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded-xl
+                               font-medium transition-colors flex items-center">
+                        <i class="fas fa-download mr-2"></i>Download
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/calculate.js"></script>
+    <script src="js/download.js"></script>
+</body>
+</html>
