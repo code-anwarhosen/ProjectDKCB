@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .cell-content {
     display: flex;
     align-items: center;
@@ -77,4 +82,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     position: absolute;
     width: 100%;
     top: 20px;
+}
+
+/* Sticky header */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Scrollable table body */
+#spreadsheet {
+    max-height: 70vh; /* Adjust height as needed */
+    overflow-y: auto;
+}
+
+/* Sticky bottom action bar */
+.sticky-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.9); /* Tailwind slate-900 with opacity */
+    padding: 12px;
+    z-index: 10;
 }

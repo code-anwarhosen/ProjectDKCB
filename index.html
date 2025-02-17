@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel Processor</title>
 
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tailwind.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
@@ -75,10 +76,10 @@
     </div>
 
     <!-- Editor Page (initially hidden) -->
-    <div id="editorPage" class="page-container hidden-page">
-        <div class="container mx-auto px-4 py-8">
+    <div id="editorPage" class="page-container hidden-page flex flex-col flex-grow">
+        <div class="container mx-auto p-2">
 
-            <div class="mb-2 text-center">
+            <div class="mb-1 text-center sticky top-2">
                 <h1 class="text-2xl font-bold text-slate-100 mb-2">
                     <i class="fas fa-table text-sky-400 mr-2"></i>Cash Book Data
                 </h1>
@@ -96,9 +97,11 @@
                 </label>
             </div>
 
-            <div class="bg-slate-800 rounded-xl shadow-2xl p-6 overflow-x-auto">
-                <div class="inline-block min-w-full">
-                    <div class="grid grid-cols-8 gap-px bg-slate-700 mb-px">
+            <div class="bg-slate-800 rounded-xl shadow-2xl p-6 flex-grow flex flex-col">
+                <div class="inline-block min-w-full flex-grow">
+
+                    <!-- Sticky Table Header -->
+                    <div class="sticky-header grid grid-cols-8 gap-px bg-slate-700">
                         <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">SN</div>
                         <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Cash A/C</div>
                         <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Hire A/C</div>
@@ -109,10 +112,13 @@
                         <div class="bg-slate-700 p-2 text-sm font-medium text-slate-300 text-center">Remarks</div>
                     </div>
 
+                    <!-- Scrollable Table Body -->
                     <div id="spreadsheet" class="grid grid-cols-8 gap-px bg-slate-700"></div>
                 </div>
             </div>
-            <div class="mt-6 flex justify-between items-center">
+
+            <!-- Sticky Footer -->
+            <div class="sticky-footer flex justify-between items-center">
                 <div class="text-slate-400 text-sm">
                     Total Rows: <span id="rowCount">0</span>
                 </div>
@@ -127,7 +133,6 @@
                         <i class="fas fa-download mr-2"></i>Download
                     </button>
                 </div>
-                
             </div>
         </div>
     </div>

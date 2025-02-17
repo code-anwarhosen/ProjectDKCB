@@ -188,7 +188,6 @@ function createRow(data = ['', '', '', '', '', '', '']) {
             cellContent.appendChild(checkbox);
         }
         else if (index === 5 && !isNaN(new Date(value).getDate())) { // Date Column
-            console.log(value);
             const dateInput = document.createElement('input');
             dateInput.type = 'date';
             dateInput.className = 'text-slate-300 text-sm w-full text-center border-none outline-none';
