@@ -54,7 +54,12 @@
 
                     <div class="mb-3 max-w-[120px] mx-auto">
                         <input type="date" id="working_date" class="text-slate-300 border-none outline-none">
-                        <script>document.getElementById('working_date').valueAsDate  = new Date();</script>
+                        <script>
+                            const input = document.getElementById('working_date');
+                            const today = new Date().toISOString().split('T')[0];
+                            input.value = today;
+                            input.max = today;
+                        </script>
                     </div>
 
                     <button type="submit" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 px-6 rounded-xl

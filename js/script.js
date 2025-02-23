@@ -192,6 +192,7 @@ function createRow(data = ['', '', '', '', '', '', '']) {
             dateInput.type = 'date';
             dateInput.className = 'text-slate-300 text-sm w-full text-center border-none outline-none';
             dateInput.value = value;
+            dateInput.max = new Date().toISOString().split('T')[0];
             dateInput.addEventListener('keydown', (e) => e.preventDefault());
             cellContent.appendChild(dateInput);
         }
