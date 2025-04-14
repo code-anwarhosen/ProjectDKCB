@@ -17,7 +17,7 @@ function calculateTotals() {
             const amountCell = row.children[3].querySelector(`[contenteditable="${isCellsEditable}"]`);
             const paymentTypeSelect = row.children[4].querySelector('select');
             
-            const amount = parseInt(amountCell.textContent.replace(/[^0-9.]/g, '')) || 0;
+            const amount = parseInt(amountCell.textContent.replace(/[^0-9.-]/g, '')) || 0;
             const paymentType = paymentTypeSelect ? paymentTypeSelect.value : 'Cash';
 
             totalAmount += amount;
